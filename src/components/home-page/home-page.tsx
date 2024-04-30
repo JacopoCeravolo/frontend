@@ -38,9 +38,29 @@ export const HomePage = ({ className }: HomePageProps) => {
         return userFlow.indexOf(searchString);
     };
 
-    const handleForward = () => {
+    const handleForward = async () => {
         const index = findIndexInArray(currentComponent);
-        if (index < userFlow.length - 1) {
+        if (index === userFlow.length - 1) {
+            try {
+                const response = await fetch(import.meta.env.VITE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+                if (response.ok) {
+                    // Handle success
+                    console.log('User data sent successfully.');
+                } else {
+                    // Handle error
+                    console.error('Failed to send user data.');
+                }
+            } catch (error) {
+                // Handle network errors
+                console.error('Network error:', error);
+            }
+        } else {
             setCurrentComponent(userFlow[index + 1]);
         }
     };
@@ -112,7 +132,7 @@ export const HomePage = ({ className }: HomePageProps) => {
                     <div className={styles.placeholder} />
                 )}
                 <div className={styles.form}>{renderComponent()}</div>
-                {index === userFlow.length - 1 || index === 0 || areStagesEmpty ? (
+                {index === 0 || areStagesEmpty ? (
                     <div className={styles.placeholder} />
                 ) : (
                     <div className={styles.button}>

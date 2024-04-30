@@ -3,6 +3,6 @@ import { IndustrySelector } from '../../../components/industry-selector/industry
 
 export default createBoard({
     name: 'IndustrySelector',
-    Board: () => <IndustrySelector />,
+    Board: () => <IndustrySelector role={''} stage={[]} />,
     isSnippet: true,
 });
